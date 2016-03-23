@@ -3,7 +3,7 @@ class ssh::hostkeys {
   $ipaddresses  = ipaddresses()
   $host_aliases = flatten([ $::fqdn, $::hostname, $ipaddresses ])
 
-  if $::sshdsakey {
+  if getvar('sshdsakey') {
     @@sshkey { "${::fqdn}_dsa":
       ensure       => present,
       host_aliases => $host_aliases,
@@ -15,7 +15,7 @@ class ssh::hostkeys {
       ensure => absent,
     }
   }
-  if $::sshrsakey {
+  if getvar('sshrsakey') {
     @@sshkey { "${::fqdn}_rsa":
       ensure       => present,
       host_aliases => $host_aliases,
@@ -27,7 +27,7 @@ class ssh::hostkeys {
       ensure => absent,
     }
   }
-  if $::sshecdsakey {
+  if getvar('sshecdsakey') {
     @@sshkey { "${::fqdn}_ecdsa":
       ensure       => present,
       host_aliases => $host_aliases,
@@ -40,7 +40,7 @@ class ssh::hostkeys {
       type   => 'ecdsa-sha2-nistp256',
     }
   }
-  if $::sshed25519key {
+  if getvar('sshed25519key') {
     @@sshkey { "${::fqdn}_ed25519":
       ensure       => present,
       host_aliases => $host_aliases,

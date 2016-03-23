@@ -3,7 +3,7 @@ module Puppet::Parser::Functions
 Returns all ip addresses of network interfaces (except lo) found by facter.
 EOS
     ) do |args|
-        interfaces = lookupvar('interfaces')
+        interfaces = function_getvar(['interfaces'])
 
         # In Puppet v2.7, lookupvar returns :undefined if the variable does
         # not exist.  In Puppet 3.x, it returns nil.
@@ -15,8 +15,8 @@ EOS
             interfaces = interfaces.split(',')
             interfaces.each do |iface|
                 if ! iface.include?('lo')
-                    ipaddr = lookupvar("ipaddress_#{iface}")
-                    ipaddr6 = lookupvar("ipaddress6_#{iface}")
+                    ipaddr = function_getvar(["ipaddress_#{iface}"])
+                    ipaddr6 = function_getvar(["ipaddress6_#{iface}"])
                     if ipaddr and (ipaddr!= :undefined)
                         result << ipaddr
                     end
@@ -27,8 +27,8 @@ EOS
             end
         else
             if ! interfaces.include?('lo')
-                ipaddr = lookupvar("ipaddress_#{interfaces}")
-                ipaddr6 = lookupvar("ipaddress6_#{interfaces}")
+                ipaddr = function_getvar(["ipaddress_#{interfaces}"])
+                ipaddr6 = function_getvar(["ipaddress6_#{interfaces}"])
                 if ipaddr and (ipaddr!= :undefined)
                     result << ipaddr
                 end
